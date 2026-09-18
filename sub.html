@@ -4651,7 +4651,7 @@ THE SOFTWARE.
             hero1: "Fast VPN,",
             hero2: "For Premium Content.",
             heroNote: "Enjoy adult content securely.",
-            today: "Today",
+            today: "",
             usageTitle: "Room to explore.",
             usageSubtitle: "Your data, at a glance",
             currentPeriod: "CURRENT PERIOD",
@@ -4862,7 +4862,6 @@ THE SOFTWARE.
         }
         function renderDates() {
           const now = new Date();
-          setDate("today-gregorian", now, "gregory");
           if (expiration.date) {
             setDate("expiry-gregorian", expiration.date, "gregory");
           } else {
