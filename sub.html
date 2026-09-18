@@ -28,8 +28,8 @@
         document.documentElement.dataset.theme = theme;
         document.documentElement.dataset.palette = palette;
 
-        document.documentElement.dir =
-          document.documentElement.lang === "fa" ? "rtl" : "ltr";
+        document.documentElement.dir = document.documentElement.lang === "fa" ? "rtl" : "ltr";
+        
       })();
     </script>
     <style>
@@ -544,6 +544,9 @@
           inset 0 1px 0 #ffffff1a;
         backdrop-filter: blur(28px) saturate(135%);
         -webkit-backdrop-filter: blur(28px) saturate(135%);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translate3d(0, 0, 0);
       }
       .card {
         padding: 28px;
@@ -1192,13 +1195,13 @@
         }
         @keyframes enter {
           from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          opacity: 0;
+          transform: translateY(8px) translate3d(0, 0, 0);
+         }
+         to {
+          opacity: 1;
+          transform: translateY(0) translate3d(0, 0, 0);
+         }
         }
       }
       @media (max-width: 1000px) {
@@ -1504,6 +1507,7 @@
           </div>
 
           <div class="hero-tools">
+    
             <div class="palette-control">
               <span class="caption" data-i18n="colorStyle">Theme</span>
               <div
