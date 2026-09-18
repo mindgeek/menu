@@ -8,6 +8,7 @@
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <meta name="description" content="VPN for premium adult content." />
     <title>MindGeek - VPN</title>
+
     <script id="preferences">
       (() => {
         let palette = "pink";
@@ -928,6 +929,23 @@
         align-items: flex-start;
         line-height: 1.6;
       }
+
+      .spacious-action-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-top: 32px;
+        margin-bottom: 40px;
+      }
+
+      .spacious-action-row .button {
+        min-height: 48px;
+        padding: 13px 24px;
+        font-size: 0.85rem;
+        border-radius: 15px;
+      }
+
       .app-note > .fa-solid {
         margin-top: calc(0.3em + var(--icon-text-offset));
       }
@@ -1426,11 +1444,11 @@
     </div>
     <div class="shell">
       <header class="topbar">
-        <a class="brand" href="#main" aria-label="liquildGlassy">
+        <a class="brand" href="https://mindgeek.app" aria-label="liquildGlassy">
           <span class="brand-mark" aria-hidden="true"></span>
           <div>
             <div class="brand-name">MindGeek</div>
-            <div class="brand-tag">Nuvio Addonn</div>
+            <div class="brand-tag">Nuvio Addon</div>
           </div>
         </a>
         <nav
@@ -1462,6 +1480,9 @@
             imports.
           </p></noscript
         >
+
+        <div id="data-warning" class="notice" hidden></div>
+
         <section class="hero" aria-labelledby="page-title">
           <div>
             <div class="eyebrow">
@@ -1478,6 +1499,7 @@
               Enjoy adult content securely.
             </p>
           </div>
+
           <div class="hero-tools">
             <div class="today">
               <p class="eyebrow" data-i18n="today">Today</p>
@@ -1497,8 +1519,8 @@
                   aria-pressed="true"
                 >
                   <span class="swatch" aria-hidden="true"
-                    ><i class="fa-solid fa-check" aria-hidden="true"></i></span
-                  ><span data-i18n="pinkStyle">Pink</span>
+                    ><i class="fa-solid fa-check" aria-hidden="true"></i
+                  ></span>
                 </button>
                 <button
                   type="button"
@@ -1506,14 +1528,44 @@
                   aria-pressed="false"
                 >
                   <span class="swatch" aria-hidden="true"
-                    ><i class="fa-solid fa-check" aria-hidden="true"></i></span
-                  ><span data-i18n="greenStyle">Green</span>
+                    ><i class="fa-solid fa-check" aria-hidden="true"></i
+                  ></span>
                 </button>
               </div>
             </div>
           </div>
         </section>
-        <div id="data-warning" class="notice" hidden></div>
+
+        <div class="spacious-action-row">
+          <a
+            href="nuvio://install-addon?url=https://YOUR-ADDON-DOMAIN/manifest.json"
+            class="button primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            <span>Install on Nuvio</span>
+          </a>
+
+          <a
+            href="stremio://YOUR-ADDON-DOMAIN/manifest.json"
+            class="button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i
+              class="fa-solid fa-arrow-up-right-from-square"
+              aria-hidden="true"
+            ></i>
+            <span>Install on Stremio</span>
+          </a>
+
+          <button type="button" class="button" id="copy-addon-url">
+            <i class="fa-solid fa-copy" aria-hidden="true"></i>
+            <span>Copy Addon URL</span>
+          </button>
+        </div>
+
         <section
           class="overview"
           id="overview"
@@ -5099,6 +5151,7 @@ THE SOFTWARE.
           $(id).addEventListener("click", () => copy(subUrl)),
         );
         $("copy-json").addEventListener("click", () => copy(jsonUrl));
+        $("copy-addon-url")?.addEventListener("click", () => copy("https://YOUR-ADDON-DOMAIN/manifest.json"));
         $("copy-configs").addEventListener("click", () =>
           copy(configValues.join("\n")),
         );
