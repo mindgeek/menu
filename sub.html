@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-theme="light" data-palette="pink">
+<html lang="fa" dir="rtl" data-theme="light" data-palette="pink">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,19 +10,22 @@
     <title>MindGeek - VPN</title>
     <script id="preferences">
       (() => {
-        const theme = (() => {
-          try {
-            const saved = localStorage.getItem("liquildGlassy.theme");
-            if (["light", "dark"].includes(saved)) return saved;
-          } catch (_) {}
-          return matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-        })();
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
+        let palette = "pink";
+
+        let theme = matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        try {
+          const savedTheme = localStorage.getItem("liquildGlassy.theme");
+          const savedPalette = localStorage.getItem("liquildGlassy.palette");
+          if (["pink", "green"].includes(savedPalette)) palette = savedPalette;
+          if (["light", "dark"].includes(savedTheme)) theme = savedTheme;
+        } catch (_) {
+          /* Preferences are optional in private/restricted browsers. */
+        }
+
         document.documentElement.dataset.theme = theme;
-        document.documentElement.dataset.palette = "pink";
+        document.documentElement.dataset.palette = palette;
       })();
     </script>
     <style>
@@ -400,6 +403,7 @@
         gap: 10px;
         align-items: center;
       }
+
       .icon-button {
         display: inline-grid;
         place-items: center;
@@ -760,6 +764,9 @@
       }
       /* Vazirmatn's Persian glyphs sit lower inside their line box than the Latin glyphs.
        Offset text-adjacent icons only; standalone icons stay centered in their controls. */
+      :root[lang="fa"] {
+        --icon-text-offset: 0.1em;
+      }
       .fa-solid::before {
         display: block;
         line-height: 1;
@@ -769,6 +776,10 @@
       .get-app::after {
         position: relative;
         top: var(--icon-text-offset);
+      }
+      .button > span[data-i18n],
+      .palette-switch button > span[data-i18n] {
+        min-width: 0;
       }
       .icon-button {
         padding: 0;
@@ -815,7 +826,6 @@
         align-items: center;
       }
       .section-number {
-        counter-increment: help-section;
         display: grid;
         place-items: center;
         width: 31px;
@@ -1127,6 +1137,24 @@
         width: max-content;
         pointer-events: none;
       }
+      [dir="rtl"] .toast {
+        transform: translateX(50%);
+      }
+      [dir="rtl"] h1,
+      [dir="rtl"] h2,
+      [dir="rtl"] .account-name {
+        letter-spacing: 0;
+      }
+      [dir="rtl"] .eyebrow {
+        letter-spacing: 0;
+      }
+      [dir="rtl"] h1 {
+        line-height: 1.5;
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+      [dir="rtl"] .brand {
+        direction: ltr;
+      }
       @supports not (
         (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
       ) {
@@ -1371,7 +1399,7 @@
     </style>
   </head>
   <body>
-    <a class="skip" href="#main">Skip to content</a>
+    <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
     <div class="ambient" aria-hidden="true"><span></span></div>
     <!-- Keep all untrusted Go template values in escaped HTML text/attributes, never executable JavaScript. -->
     <div
@@ -1402,12 +1430,19 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <div>
             <div class="brand-name">MindGeek</div>
-            <div class="brand-tag">Nuvio Addon</div>
+            <div class="brand-tag">Nuvio Addonn</div>
           </div>
         </a>
-        <nav class="nav" aria-label="Page navigation">
-          <a href="#overview">Overview</a><a href="#apps">Applications</a
-          ><a href="#configurations">Configurations</a>
+        <nav
+          class="nav"
+          data-i18n-aria="navigation"
+          aria-label="Page navigation"
+        >
+          <a href="#overview" data-i18n="overview">Overview</a
+          ><a href="#apps" data-i18n="applications">Applications</a
+          ><a href="#configurations" data-i18n="configurations"
+            >Configurations</a
+          >
         </nav>
         <div class="toolbar">
           <button
@@ -1431,22 +1466,31 @@
           <div>
             <div class="eyebrow">
               <i class="tiny-dot" aria-hidden="true"></i
-              ><span>4k | 1080p | 720p | 480p | 320p </span>
+              ><span data-i18n="yourSpace"
+                >4k | 1080p | 720p | 480p | 320p</span
+              >
             </div>
             <h1 id="page-title">
-              <span style="color: inherit">Fast VPN,</span
-              ><span>For Premium Content.</span>
+              <span style="color: inherit" data-i18n="hero1">Fast VPN,</span
+              ><span data-i18n="hero2">in clear view.</span>
             </h1>
-            <p class="hero-note">Enjoy adult content securely.</p>
+            <p class="hero-note" data-i18n="heroNote">
+              Enjoy adult content securely.
+            </p>
           </div>
           <div class="hero-tools">
             <div class="today">
-              <p class="eyebrow">Today</p>
+              <p class="eyebrow" data-i18n="today">Today</p>
               <time id="today-gregorian"></time><time id="today-jalali"></time>
             </div>
             <div class="palette-control">
-              <span class="caption">Theme</span>
-              <div class="palette-switch" role="group" aria-label="Color style">
+              <span class="caption" data-i18n="colorStyle">Color style</span>
+              <div
+                class="palette-switch"
+                role="group"
+                data-i18n-aria="colorStyle"
+                aria-label="Color style"
+              >
                 <button
                   type="button"
                   data-palette-choice="pink"
@@ -1454,7 +1498,7 @@
                 >
                   <span class="swatch" aria-hidden="true"
                     ><i class="fa-solid fa-check" aria-hidden="true"></i></span
-                  ><span>Pink</span>
+                  ><span data-i18n="pinkStyle">Pink</span>
                 </button>
                 <button
                   type="button"
@@ -1463,21 +1507,28 @@
                 >
                   <span class="swatch" aria-hidden="true"
                     ><i class="fa-solid fa-check" aria-hidden="true"></i></span
-                  ><span>Green</span>
+                  ><span data-i18n="greenStyle">Green</span>
                 </button>
               </div>
             </div>
           </div>
         </section>
         <div id="data-warning" class="notice" hidden></div>
-        <section class="overview" id="overview" aria-label="Overview">
+        <section
+          class="overview"
+          id="overview"
+          data-i18n-aria="overview"
+          aria-label="Overview"
+        >
           <article class="glass card">
             <div class="card-heading">
               <div>
-                <h2>Room to explore.</h2>
-                <p class="caption">Your data, at a glance</p>
+                <h2 data-i18n="usageTitle">Room to explore.</h2>
+                <p class="caption" data-i18n="usageSubtitle">
+                  Your data, at a glance
+                </p>
               </div>
-              <span class="tag">CURRENT PERIOD</span>
+              <span class="tag" data-i18n="currentPeriod">CURRENT PERIOD</span>
             </div>
             <div class="usage-content">
               <div
@@ -1488,7 +1539,9 @@
               >
                 <div class="donut-center" aria-hidden="true">
                   <strong id="usage-percent">—</strong
-                  ><span id="chart-caption">data used</span>
+                  ><span id="chart-caption" data-i18n="dataUsed"
+                    >data used</span
+                  >
                 </div>
               </div>
               <div class="usage-details">
@@ -1497,17 +1550,17 @@
                 <div class="legend">
                   <div class="legend-row">
                     <i class="dot download" aria-hidden="true"></i
-                    ><span class="muted">Downloaded</span
+                    ><span class="muted" data-i18n="downloaded">Downloaded</span
                     ><strong id="download-value">—</strong>
                   </div>
                   <div class="legend-row">
                     <i class="dot upload" aria-hidden="true"></i
-                    ><span class="muted">Uploaded</span
+                    ><span class="muted" data-i18n="uploaded">Uploaded</span
                     ><strong id="upload-value">—</strong>
                   </div>
                   <div class="legend-row">
                     <i class="dot remaining" aria-hidden="true"></i
-                    ><span class="muted">Remaining</span
+                    ><span class="muted" data-i18n="remaining">Remaining</span
                     ><strong id="remaining-value">—</strong>
                   </div>
                 </div>
@@ -1515,45 +1568,55 @@
             </div>
             <div class="usage-bottom">
               <span class="caption" id="usage-message">—</span
-              ><span class="caption">Updated on page load</span>
+              ><span class="caption" data-i18n="snapshot"
+                >Updated on page load</span
+              >
             </div>
           </article>
           <article class="glass card account-card">
             <div class="card-heading">
-              <p class="eyebrow">Your subscription</p>
+              <p class="eyebrow" data-i18n="yourSubscription">
+                Your subscription
+              </p>
               <span class="status" id="account-status">—</span>
             </div>
             <h2 class="account-name" id="account-name">—</h2>
             <p class="caption account-id">
-              <span>Subscription ID</span>
+              <span data-i18n="subscriptionId">Subscription ID</span>
               <bdi class="mono" id="account-id">—</bdi>
             </p>
             <div class="plan-stats">
               <div class="plan-stat">
-                <p class="caption">Data allowance</p>
+                <p class="caption" data-i18n="dataAllowance">Data allowance</p>
                 <strong id="allowance-value">—</strong>
               </div>
               <div class="plan-stat">
-                <p class="caption">Time remaining</p>
+                <p class="caption" data-i18n="timeRemaining">Time remaining</p>
                 <strong id="days-value">—</strong>
               </div>
             </div>
             <div class="expiry-dates">
               <div>
-                <span>Gregorian</span><time id="expiry-gregorian">—</time>
+                <span data-i18n="gregorian">Gregorian</span
+                ><time id="expiry-gregorian">—</time>
               </div>
-              <div><span>Jalali</span><time id="expiry-jalali">—</time></div>
+              <div>
+                <span data-i18n="jalali">Jalali</span
+                ><time id="expiry-jalali">—</time>
+              </div>
             </div>
-            <p class="caption" style="margin-top: 6px">
+            <p class="caption" style="margin-top: 6px" data-i18n="expiryHint">
               Expiry dates · your device’s time zone
             </p>
             <div class="actions">
               <button type="button" class="button primary grow" id="copy-sub">
                 <i class="fa-solid fa-copy" aria-hidden="true"></i
-                ><span>Copy subscription</span></button
+                ><span data-i18n="copySubscription"
+                  >Copy subscription</span
+                ></button
               ><button type="button" class="button" id="show-qr">
                 <i class="fa-solid fa-qrcode" aria-hidden="true"></i
-                ><span>QR code</span>
+                ><span data-i18n="qrCode">QR code</span>
               </button>
             </div>
           </article>
@@ -1566,10 +1629,12 @@
         >
           <div class="card-heading">
             <div class="apps-heading">
-              <span class="section-number" aria-hidden="true"></span>
+              <span class="section-number" aria-hidden="true">01</span>
               <div>
-                <h2 id="apps-title">One tap. You’re on your way.</h2>
-                <p class="caption">
+                <h2 id="apps-title" data-i18n="appsTitle">
+                  One tap. You’re on your way.
+                </h2>
+                <p class="caption" data-i18n="appsSubtitle">
                   Bring your subscription to your favorite app.
                 </p>
               </div>
@@ -1588,9 +1653,9 @@
                 />
               </div>
               <h3 dir="ltr">v2rayNG</h3>
-              <p class="caption">Android</p>
+              <p class="caption" data-i18n="android">Android</p>
               <button type="button" class="button" data-app="v2rayng">
-                <span>Import to app</span
+                <span data-i18n="importApp">Import to app</span
                 ><i
                   class="fa-solid fa-arrow-up-right-from-square"
                   aria-hidden="true"
@@ -1600,6 +1665,7 @@
                 href="https://github.com/2dust/v2rayNG/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-i18n="getApp"
                 >Get the app</a
               >
             </article>
@@ -1615,9 +1681,9 @@
                 />
               </div>
               <h3 dir="ltr">V2Box</h3>
-              <p class="caption">iOS · Android</p>
+              <p class="caption" data-i18n="iosAndroid">iOS · Android</p>
               <button type="button" class="button" data-app="v2box">
-                <span>Import to app</span
+                <span data-i18n="importApp">Import to app</span
                 ><i
                   class="fa-solid fa-arrow-up-right-from-square"
                   aria-hidden="true"
@@ -1629,12 +1695,14 @@
                   href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690"
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-i18n="getIos"
                   >iOS</a
                 ><a
                   class="get-app"
                   href="https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box"
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-i18n="getAndroid"
                   >Android</a
                 >
               </div>
@@ -1651,9 +1719,9 @@
                 />
               </div>
               <h3 dir="ltr">Streisand</h3>
-              <p class="caption">iOS</p>
+              <p class="caption" data-i18n="ios">iOS</p>
               <button type="button" class="button" data-app="streisand">
-                <span>Import to app</span
+                <span data-i18n="importApp">Import to app</span
                 ><i
                   class="fa-solid fa-arrow-up-right-from-square"
                   aria-hidden="true"
@@ -1663,6 +1731,7 @@
                 href="https://apps.apple.com/app/streisand/id6450534064"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-i18n="getApp"
                 >Get the app</a
               >
             </article>
@@ -1678,9 +1747,9 @@
                 />
               </div>
               <h3 dir="ltr">v2rayN</h3>
-              <p class="caption">Windows · macOS · Linux</p>
+              <p class="caption" data-i18n="desktop">Windows · macOS · Linux</p>
               <button type="button" class="button" data-app="v2rayn">
-                <span>Import via clipboard</span
+                <span data-i18n="importClipboard">Import via clipboard</span
                 ><i
                   class="fa-solid fa-arrow-up-right-from-square"
                   aria-hidden="true"
@@ -1690,13 +1759,14 @@
                 href="https://github.com/2dust/v2rayN/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-i18n="getApp"
                 >Get the app</a
               >
             </article>
           </div>
           <p class="app-note">
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i
-            ><span
+            ><span data-i18n="appNote"
               >Install the app first. If it doesn’t open, copy your subscription
               and add it inside the app.</span
             >
@@ -1708,10 +1778,12 @@
               <summary>
                 <div>
                   <h2>
-                    <span>Configurations</span>
+                    <span data-i18n="configurations">Configurations</span>
                     <span class="count" id="config-count">0</span>
                   </h2>
-                  <p class="caption">A direct route, when you need it.</p>
+                  <p class="caption" data-i18n="configsSubtitle">
+                    A direct route, when you need it.
+                  </p>
                 </div>
                 <i
                   class="fa-solid fa-chevron-down chevron"
@@ -1719,25 +1791,32 @@
                 ></i>
               </summary>
               <ul class="config-list" id="config-list"></ul>
-              <p class="caption" id="empty-configs" hidden>
+              <p
+                class="caption"
+                id="empty-configs"
+                hidden
+                data-i18n="noConfigs"
+              >
                 No individual configurations are available.
               </p>
               <div class="actions">
                 <button type="button" class="button small" id="copy-configs">
                   <i class="fa-solid fa-copy" aria-hidden="true"></i
-                  ><span>Copy all</span></button
+                  ><span data-i18n="copyAll">Copy all</span></button
                 ><button
                   type="button"
                   class="button small"
                   id="download-configs"
                 >
                   <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i
-                  ><span>Download .txt</span>
+                  ><span data-i18n="downloadConfigs">Download .txt</span>
                 </button>
               </div>
             </details>
             <div class="link-tools">
-              <label for="subscription-link">Subscription link</label>
+              <label for="subscription-link" data-i18n="subscriptionLink"
+                >Subscription link</label
+              >
               <div class="link-line">
                 <input
                   id="subscription-link"
@@ -1748,22 +1827,28 @@
                   autocomplete="off"
                 /><button type="button" class="button small" id="copy-link">
                   <i class="fa-solid fa-copy" aria-hidden="true"></i
-                  ><span>Copy</span>
+                  ><span data-i18n="copy">Copy</span>
                 </button>
               </div>
               <button type="button" class="button small" id="copy-json" hidden>
                 <i class="fa-solid fa-link" aria-hidden="true"></i
-                ><span>Copy JSON subscription</span>
+                ><span data-i18n="copyJson">Copy JSON subscription</span>
               </button>
             </div>
           </section>
           <section class="glass card" aria-labelledby="help-title">
-            <h2 id="help-title">Make yourself at home.</h2>
+            <h2 id="help-title" data-i18n="helpTitle">Steps</h2>
             <ol class="help-steps">
-              <li>Install a compatible app for your device.</li>
-              <li>Import your subscription, then update its servers.</li>
-              <li>Choose a server in the app and connect.</li>
-              <li>Open nuvio, install the MindGeek addon, and enjoy!</li>
+              <li data-i18n="step1">
+                Install a compatible app for your device.
+              </li>
+              <li data-i18n="step2">
+                Import your subscription, then update its servers.
+              </li>
+              <li data-i18n="step3">Choose a server in the app and connect.</li>
+              <li data-i18n="step4">
+                Open nuvio, install the MindGeek addon, and enjoy!.
+              </li>
             </ol>
             <div class="privacy">
               <i
@@ -1771,8 +1856,8 @@
                 aria-hidden="true"
               ></i>
               <div>
-                <h3>Your link is your key.</h3>
-                <p>
+                <h3 data-i18n="privacyTitle">Your link is your key.</h3>
+                <p data-i18n="privacyNote">
                   Keep your subscription and QR code private. QR codes are
                   generated on your device; no external QR service is used.
                 </p>
@@ -1782,10 +1867,10 @@
         </div>
       </main>
       <footer>
-        <span><b dir="ltr">MindGeek</b> <span>· Nuvio Addon</span></span
-        ><a id="support-email" href="mailto:support@mindgeek.app"
-          >support@mindgeek.app</a
-        >
+        <span
+          ><b dir="ltr">MindGeek</b>
+          <span data-i18n="footer">· Nuvio Addon</span></span
+        ><span data-i18n="footerNote">support@mindgeek.app</span>
       </footer>
     </div>
     <dialog
@@ -1794,12 +1879,18 @@
       aria-describedby="qr-hint"
     >
       <div class="dialog-heading">
-        <h2 id="qr-title">Scan. Import. Connect.</h2>
-        <button class="icon-button" type="button" data-close aria-label="Close">
+        <h2 id="qr-title" data-i18n="qrTitle">Scan. Import. Connect.</h2>
+        <button
+          class="icon-button"
+          type="button"
+          data-close
+          data-i18n-aria="close"
+          aria-label="Close"
+        >
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
-      <p class="caption" id="qr-hint">
+      <p class="caption" id="qr-hint" data-i18n="qrHint">
         Scan with your client app. Keep this code private.
       </p>
       <div class="qr-wrap" id="qr-wrap">
@@ -1809,10 +1900,11 @@
           aria-label="Subscription QR code"
         ></canvas>
       </div>
-      <p class="notice" id="qr-error" hidden>
+      <p class="notice" id="qr-error" hidden data-i18n="qrError">
         This link is too long for a QR code. Copy it instead.
       </p>
-      <label class="sr-only" for="qr-value">QR code content</label
+      <label class="sr-only" for="qr-value" data-i18n="qrValue"
+        >QR code content</label
       ><textarea
         class="dialog-value mono"
         id="qr-value"
@@ -1823,29 +1915,40 @@
       <div class="actions">
         <button class="button primary grow" type="button" id="copy-qr">
           <i class="fa-solid fa-copy" aria-hidden="true"></i
-          ><span>Copy</span></button
+          ><span data-i18n="copy">Copy</span></button
         ><button class="button" type="button" id="save-qr">
           <i class="fa-solid fa-download" aria-hidden="true"></i
-          ><span>Save QR</span>
+          ><span data-i18n="saveQr">Save QR</span>
         </button>
       </div>
     </dialog>
     <dialog id="import-dialog" aria-labelledby="import-title">
       <div class="dialog-heading">
-        <h2 id="import-title">Import into v2rayN</h2>
-        <button class="icon-button" type="button" data-close aria-label="Close">
+        <h2 id="import-title" data-i18n="importTitle">Import into v2rayN</h2>
+        <button
+          class="icon-button"
+          type="button"
+          data-close
+          data-i18n-aria="close"
+          aria-label="Close"
+        >
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
-      <p class="caption">
+      <p class="caption" data-i18n="desktopHint">
         Copy the subscription below, then follow these steps in v2rayN.
       </p>
       <ol class="help-steps">
-        <li>Open Subscription groups → Subscription group settings.</li>
-        <li>Add a group, paste the URL, and save.</li>
-        <li>Update the subscription, then choose a server.</li>
+        <li data-i18n="desktopStep1">
+          Open Subscription groups → Subscription group settings.
+        </li>
+        <li data-i18n="desktopStep2">Add a group, paste the URL, and save.</li>
+        <li data-i18n="desktopStep3">
+          Update the subscription, then choose a server.
+        </li>
       </ol>
-      <label class="sr-only" for="import-value">Subscription link</label
+      <label class="sr-only" for="import-value" data-i18n="subscriptionLink"
+        >Subscription link</label
       ><textarea
         class="dialog-value mono"
         id="import-value"
@@ -1856,10 +1959,14 @@
       <div class="actions">
         <button type="button" class="button primary grow" id="copy-import">
           <i class="fa-solid fa-copy" aria-hidden="true"></i
-          ><span>Copy subscription</span>
+          ><span data-i18n="copySubscription">Copy subscription</span>
         </button>
       </div>
-      <p class="caption" style="margin-top: 15px">
+      <p
+        class="caption"
+        style="margin-top: 15px"
+        data-i18n="desktopAlternative"
+      >
         For a one-time import, use “Copy all” under Configurations, then import
         URLs from the clipboard in v2rayN (Ctrl+V on Windows).
       </p>
@@ -4364,9 +4471,9 @@ THE SOFTWARE.
                 )
               : 0;
           return (
-            new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(
-              value / 1024 ** Math.max(0, index),
-            ) +
+            new Intl.NumberFormat(language === "fa" ? "fa-IR" : "en-US", {
+              maximumFractionDigits: 1,
+            }).format(value / 1024 ** Math.max(0, index)) +
             " " +
             units[Math.max(0, index)]
           );
@@ -4475,131 +4582,140 @@ THE SOFTWARE.
           raw.id && !raw.id.includes("{") && raw.id !== "<no value>"
             ? raw.id
             : "";
-        let toastTimer, modalTrigger;
+        let language = document.documentElement.lang,
+          toastTimer,
+          modalTrigger;
         const strings = {
-          colorStyle: "Color style",
-          pinkStyle: "Pink",
-          greenStyle: "Green",
-          skip: "Skip to content",
-          navigation: "Page navigation",
-          overview: "Overview",
-          applications: "Applications",
-          configurations: "Configurations",
-          yourSpace: "Subscription Manage",
-          hero1: "Fast VPN,",
-          hero2: "For Premium Content.",
-          heroNote: "Enjoy premium adult content securely.",
-          today: "Today",
-          usageTitle: "Room to explore.",
-          usageSubtitle: "Your data, at a glance",
-          currentPeriod: "CURRENT PERIOD",
-          dataUsed: "data used",
-          trafficSplit: "traffic split",
-          downloaded: "Downloaded",
-          uploaded: "Uploaded",
-          remaining: "Remaining",
-          snapshot: "Updated on page load",
-          yourSubscription: "Your subscription",
-          subscriptionId: "Subscription ID",
-          dataAllowance: "Data allowance",
-          timeRemaining: "Time remaining",
-          gregorian: "Gregorian",
-          jalali: "Jalali",
-          expiryHint: "Expiry dates · your device’s time zone",
-          copySubscription: "Copy subscription",
-          qrCode: "QR code",
-          appsTitle: "One tap. You’re on your way.",
-          appsSubtitle: "Bring your subscription to your favorite app.",
-          android: "Android",
-          iosAndroid: "iOS · Android",
-          ios: "iOS",
-          desktop: "Windows · macOS · Linux",
-          importApp: "Import to app",
-          importClipboard: "Import via clipboard",
-          getApp: "Get the app",
-          configsSubtitle: "A direct route, when you need it.",
-          noConfigs: "No individual configurations are available.",
-          copyAll: "Copy all",
-          downloadConfigs: "Download .txt",
-          subscriptionLink: "Subscription link",
-          copy: "Copy",
-          copyJson: "Copy JSON subscription",
-          helpTitle: "Make yourself at home.",
-          step1: "Install a compatible app for your device.",
-          step2: "Import your subscription, then update its servers.",
-          step3: "Choose a server in the app and connect.",
-          step4:
-            "Open stremio or a compatible app, Install the mindgeek addon, and start enjoying!.",
-          privacyTitle: "Your link is your key.",
-          privacyTitle: "Your link is your key.",
-          privacyNote:
-            "Keep your subscription and QR code private. QR codes are generated on your device; no external QR service is used.",
-          qrTitle: "Scan. Import. Connect.",
-          qrHint: "Scan with your client app. Keep this code private.",
-          qrError: "This link is too long for a QR code. Copy it instead.",
-          qrValue: "QR code content",
-          close: "Close",
-          saveQr: "Save QR",
-          importTitle: "Import into v2rayN",
-          desktopHint:
-            "Copy the subscription below, then follow these steps in v2rayN.",
-          desktopStep1:
-            "Open Subscription groups → Subscription group settings.",
-          desktopStep2: "Add a group, paste the URL, and save.",
-          desktopStep3: "Update the subscription, then choose a server.",
-          desktopAlternative:
-            "For a one-time import, use “Copy all” under Configurations, then import URLs from the clipboard in v2rayN (Ctrl+V on Windows).",
-          lightMode: "Switch to light mode",
-          darkMode: "Switch to dark mode",
-          unlimited: "Unlimited",
-          noExpiry: "No expiry",
-          pending: "On first use",
-          available: "Within limits",
-          expired: "Expired",
-          exhausted: "Quota reached",
-          unknown: "Unavailable",
-          days: "{n} days",
-          ofQuota: "used of {total}",
-          unlimitedQuota: "Unlimited data",
-          quotaUnknown: "Data allowance unavailable",
-          chartLabel:
-            "Downloaded: {download}. Uploaded: {upload}. Remaining: {remaining}.",
-          expiredWarning:
-            "This subscription has expired. Contact your provider to renew it.",
-          exhaustedWarning:
-            "You’ve used your data allowance. Contact your provider to top up.",
-          soonWarning: "Your subscription expires in {days} days.",
-          lowWarning: "You’ve used most of your data allowance.",
-          unknownMessage: "Usage data is unavailable.",
-          unlimitedMessage: "Unlimited data.",
-          freeData: "{amount} remaining.",
-          missingUrl: "Subscription link is unavailable.",
-          missingData: "Some subscription data is unavailable.",
-          copied: "Copied to clipboard",
-          copyFailed:
-            "Could not copy automatically. Select and copy the link manually.",
-          opening:
-            "Opening {app}… Confirm the import in the app. If it stays closed, use Copy subscription.",
-          downloadedFile: "Download prepared",
-          config: "Configuration {n}",
-          copyConfig: "Copy {name}",
-          qrConfig: "QR code for {name}",
-          appNote:
-            "Install the app first. If it doesn’t open, copy your subscription and add it inside the app.",
-          footer: "· Nuvio Addon",
-          defaultAccount: "Subscription",
-          footerNote: "support@mindgeek.app",
+          en: {
+            colorStyle: "Color style",
+            pinkStyle: "Pink",
+            greenStyle: "Green",
+            skip: "Skip to content",
+            navigation: "Page navigation",
+            language: "Language",
+            overview: "Overview",
+            applications: "Applications",
+            configurations: "Configurations",
+            yourSpace: "4k | 1080p | 720p | 480p | 320p",
+            hero1: "Fast VPN,",
+            hero2: "For Premium Content.",
+            heroNote: "Enjoy adult content securely.",
+            today: "Today",
+            usageTitle: "Room to explore.",
+            usageSubtitle: "Your data, at a glance",
+            currentPeriod: "CURRENT PERIOD",
+            dataUsed: "data used",
+            trafficSplit: "traffic split",
+            downloaded: "Downloaded",
+            uploaded: "Uploaded",
+            remaining: "Remaining",
+            snapshot: "Updated on page load",
+            yourSubscription: "Your subscription",
+            subscriptionId: "Subscription ID",
+            dataAllowance: "Data allowance",
+            timeRemaining: "Time remaining",
+            gregorian: "Gregorian",
+            jalali: "Jalali",
+            expiryHint: "Expiry dates · your device’s time zone",
+            copySubscription: "Copy subscription",
+            qrCode: "QR code",
+            appsTitle: "One tap. You’re on your way.",
+            appsSubtitle: "Bring your subscription to your favorite app.",
+            android: "Android",
+            iosAndroid: "iOS · Android",
+            ios: "iOS",
+            desktop: "Windows · macOS · Linux",
+            importApp: "Import to app",
+            importClipboard: "Import via clipboard",
+            getApp: "Get the app",
+            getIos: "iOS",
+            getAndroid: "Android",
+            appNote:
+              "Install the app first. If it doesn’t open, copy your subscription and add it inside the app.",
+            configsSubtitle: "A direct route, when you need it.",
+            noConfigs: "No individual configurations are available.",
+            copyAll: "Copy all",
+            downloadConfigs: "Download .txt",
+            subscriptionLink: "Subscription link",
+            copy: "Copy",
+            copyJson: "Copy JSON subscription",
+            helpTitle: "Steps",
+            step1: "Install a compatible app for your device.",
+            step2: "Import your subscription, then update its servers.",
+            step3: "Choose a server in the app and connect.",
+            step4: "Open nuvio, install the MindGeek addon, and enjoy!.",
+            privacyTitle: "Your link is your key.",
+            privacyNote:
+              "Keep your subscription and QR code private. QR codes are generated on your device; no external QR service is used.",
+            footer: "· Nuvio Addon",
+            footerNote: "support@mindgeek.app",
+            qrTitle: "Scan. Import. Connect.",
+            qrHint: "Scan with your client app. Keep this code private.",
+            qrError: "This link is too long for a QR code. Copy it instead.",
+            qrValue: "QR code content",
+            close: "Close",
+            saveQr: "Save QR",
+            importTitle: "Import into v2rayN",
+            desktopHint:
+              "Copy the subscription below, then follow these steps in v2rayN.",
+            desktopStep1:
+              "Open Subscription groups → Subscription group settings.",
+            desktopStep2: "Add a group, paste the URL, and save.",
+            desktopStep3: "Update the subscription, then choose a server.",
+            desktopAlternative:
+              "For a one-time import, use “Copy all” under Configurations, then import URLs from the clipboard in v2rayN (Ctrl+V on Windows).",
+            lightMode: "Switch to light mode",
+            darkMode: "Switch to dark mode",
+            unlimited: "Unlimited",
+            noExpiry: "No expiry",
+            pending: "On first use",
+            available: "Within limits",
+            expired: "Expired",
+            exhausted: "Quota reached",
+            unknown: "Unavailable",
+            days: "{n} days",
+            ofQuota: "used of {total}",
+            unlimitedQuota: "used · unlimited allowance",
+            quotaUnknown: "used · allowance unavailable",
+            freeData: "{amount} still to explore",
+            unlimitedMessage: "No data cap. Keep exploring.",
+            unknownMessage: "Usage data is unavailable.",
+            chartLabel:
+              "Downloaded: {download}. Uploaded: {upload}. Remaining: {remaining}.",
+            expiredWarning:
+              "This subscription has expired. Contact your provider to renew it.",
+            exhaustedWarning:
+              "You’ve used your data allowance. Contact your provider to top up.",
+            soonWarning:
+              "Your subscription expires in {days} days. Plan your renewal with your provider.",
+            lowWarning: "Less than 10% of your data allowance remains.",
+            missingData:
+              "Some subscription details are unavailable. Refresh this page or contact your provider.",
+            missingUrl:
+              "The subscription link is unavailable. Contact your provider.",
+            copied: "Copied to clipboard",
+            copyFailed:
+              "Could not copy automatically. Select and copy the link manually.",
+            opening:
+              "Opening {app}… Confirm the import in the app. If it stays closed, use Copy subscription.",
+            downloadedFile: "Download prepared",
+            config: "Configuration {n}",
+            copyConfig: "Copy {name}",
+            qrConfig: "QR code for {name}",
+            qrSubscription: "Subscription QR code",
+            defaultAccount: "Your subscription",
+          },
         };
         const t = (key, values = {}) =>
-          (strings[key] || key).replace(
+          (strings[language][key] || key).replace(
             /\{(\w+)\}/g,
             (_, name) => values[name] ?? "",
           );
         const num = (value) =>
-          new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(
-            value,
-          );
-        const fmt = (value) => LiquidGlassy.formatBytes(value, "en");
+          new Intl.NumberFormat(language === "fa" ? "fa-IR" : "en-US", {
+            maximumFractionDigits: 1,
+          }).format(value);
+        const fmt = (value) => LiquidGlassy.formatBytes(value, language);
         const byteLabels = new Set([
           "used-total",
           "download-value",
@@ -4696,10 +4812,8 @@ THE SOFTWARE.
         function renderDates() {
           const now = new Date();
           setDate("today-gregorian", now, "gregory");
-          setDate("today-jalali", now, "persian");
           if (expiration.date) {
             setDate("expiry-gregorian", expiration.date, "gregory");
-            setDate("expiry-jalali", expiration.date, "persian");
           } else {
             const label = t(
               expiration.kind === "unlimited" ? "noExpiry" : expiration.kind,
@@ -4778,27 +4892,9 @@ THE SOFTWARE.
           $("copy-configs").disabled = $("download-configs").disabled =
             configValues.length === 0;
         }
-        function updateSupportEmail() {
-          const support = $("support-email");
-          if (!support) return;
-          const account = accountId || "unknown";
-          const subject =
-            "MindGeek VPN Support" + (accountId ? " - " + accountId : "");
-          const body =
-            "Hello,\\n\\nI need help with my MindGeek VPN subscription." +
-            (accountId ? "\\nSubscription ID: " + accountId : "");
-          support.href =
-            "mailto:support@mindgeek.app?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(body);
-          support.title =
-            "Email support" +
-            (accountId ? " for subscription " + accountId : "");
-          support.setAttribute("aria-label", support.title);
-        }
-
         function render() {
+          document.documentElement.lang = language;
+          document.documentElement.dir = language === "fa" ? "rtl" : "ltr";
           document.querySelectorAll("[data-i18n]").forEach((node) => {
             node.textContent = t(node.dataset.i18n);
           });
@@ -4807,10 +4903,17 @@ THE SOFTWARE.
             .forEach((node) =>
               node.setAttribute("aria-label", t(node.dataset.i18nAria)),
             );
+          document
+            .querySelectorAll("[data-language]")
+            .forEach((button) =>
+              button.setAttribute(
+                "aria-pressed",
+                String(button.dataset.language === language),
+              ),
+            );
           renderTheme();
           renderDates();
           renderConfigs();
-          updateSupportEmail();
           text("account-name", emails[0] || accountId || t("defaultAccount"));
           $("account-name").dir = "auto";
           text("account-id", accountId || "—");
@@ -4838,7 +4941,7 @@ THE SOFTWARE.
               ? model.total === 0 && model.used !== null
                 ? "∞"
                 : "—"
-              : new Intl.NumberFormat("en-US", {
+              : new Intl.NumberFormat(language === "fa" ? "fa-IR" : "en-US", {
                   style: "percent",
                   maximumFractionDigits: 0,
                 }).format(model.percent / 100),
@@ -4957,6 +5060,7 @@ THE SOFTWARE.
           }
           openDialog($("qr-dialog"));
         }
+
         document.querySelectorAll("[data-palette-choice]").forEach((button) =>
           button.addEventListener("click", () => {
             document.documentElement.dataset.palette =
