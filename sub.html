@@ -1538,7 +1538,7 @@
 
         <div class="spacious-action-row">
           <a
-            href="nuvio://install-addon?url=https://YOUR-ADDON-DOMAIN/manifest.json"
+            id="install-nuvio"
             class="button primary"
             target="_blank"
             rel="noopener noreferrer"
@@ -1548,7 +1548,7 @@
           </a>
 
           <a
-            href="stremio://YOUR-ADDON-DOMAIN/manifest.json"
+            id="install-stremio"
             class="button"
             target="_blank"
             rel="noopener noreferrer"
@@ -5151,7 +5151,23 @@ THE SOFTWARE.
           $(id).addEventListener("click", () => copy(subUrl)),
         );
         $("copy-json").addEventListener("click", () => copy(jsonUrl));
-        $("copy-addon-url")?.addEventListener("click", () => copy("https://YOUR-ADDON-DOMAIN/manifest.json"));
+
+        // Set your addon URL once here:
+        const addonUrl = "https://www.mindgeek.app/manifest.json";
+
+        // Automatically configure Nuvio, Stremio, and the Copy button
+        if ($("install-nuvio"))
+          $("install-nuvio").href = addonUrl.replace(
+            /^https?:\/\//i,
+            "nuvio://",
+          );
+        if ($("install-stremio"))
+          $("install-stremio").href = addonUrl.replace(
+            /^https?:\/\//i,
+            "stremio://",
+          );
+        $("copy-addon-url")?.addEventListener("click", () => copy(addonUrl));
+
         $("copy-configs").addEventListener("click", () =>
           copy(configValues.join("\n")),
         );
