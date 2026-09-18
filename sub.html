@@ -1448,7 +1448,7 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <div>
             <div class="brand-name">MindGeek</div>
-            <div class="brand-tag">Nuvio Addon</div>
+            <div class="brand-tag">Addon</div>
           </div>
         </a>
         <nav
@@ -1503,7 +1503,7 @@
           <div class="hero-tools">
             <div class="today">
               <p class="eyebrow" data-i18n="today">Today</p>
-              <time id="today-gregorian"></time>
+              <time id="today-gregorian"></time><time id="today-jalali"></time>
             </div>
             <div class="palette-control">
               <span class="caption" data-i18n="colorStyle">Theme</span>
@@ -1681,17 +1681,11 @@
         >
           <div class="card-heading">
             <div class="apps-heading">
-
+              <span class="section-number" aria-hidden="true">01</span>
               <div>
                 <h2 id="apps-title" data-i18n="appsTitle">
-                
-                                            <div>
-                                                            <h2 id="apps-title" data-i18n="appsTitle">
-                                                                              One tap. You’re on your way.
-                                                                                              </h2>
-                                                                                                              <p class="caption" data-i18n="appsSubtitle">
-                                                                                                                                Bring your subscription to your favorite app.
-                                                                                                                                                </h2>
+                  One tap. You’re on your way.
+                </h2>
                 <p class="caption" data-i18n="appsSubtitle">
                   Bring your subscription to your favorite app.
                 </p>
@@ -1837,7 +1831,7 @@
                 <div>
                   <h2>
                     <span data-i18n="configurations">Configurations</span>
-                 
+                    <span class="count" id="config-count">0</span>
                   </h2>
                   <p class="caption" data-i18n="configsSubtitle">
                     A direct route, when you need it.
@@ -1927,7 +1921,7 @@
       <footer>
         <span
           ><b dir="ltr">MindGeek</b>
-          <span data-i18n="footer">· Nuvio Addon</span></span
+          <span data-i18n="footer">· Addon</span></span
         ><a href="mailto:support@mindgeek.app" data-i18n="footerNote"
           >support@mindgeek.app</a
         >
@@ -4642,7 +4636,7 @@ THE SOFTWARE.
           raw.id && !raw.id.includes("{") && raw.id !== "<no value>"
             ? raw.id
             : "";
-        let language = "en",
+        let language = document.documentElement.lang,
           toastTimer,
           modalTrigger;
         const strings = {
@@ -4953,8 +4947,8 @@ THE SOFTWARE.
             configValues.length === 0;
         }
         function render() {
-         document.documentElement.lang = "en";
-document.documentElement.dir = "ltr";
+          document.documentElement.lang = language;
+          document.documentElement.dir = language === "fa" ? "rtl" : "ltr";
           document.querySelectorAll("[data-i18n]").forEach((node) => {
             node.textContent = t(node.dataset.i18n);
           });
