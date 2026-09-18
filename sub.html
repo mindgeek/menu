@@ -4967,6 +4967,12 @@ THE SOFTWARE.
               ),
             );
           renderTheme();
+
+          const glassElements = document.querySelectorAll('.glass');
+          glassElements.forEach(el => el.style.display = 'none');
+          glassElements[0].offsetHeight; // Trigger reflow
+          glassElements.forEach(el => el.style.display = '');
+          
           renderDates();
           renderConfigs();
           text("account-name", emails[0] || accountId || t("defaultAccount"));
