@@ -4642,7 +4642,7 @@ THE SOFTWARE.
           raw.id && !raw.id.includes("{") && raw.id !== "<no value>"
             ? raw.id
             : "";
-        let language = document.documentElement.lang,
+        let language = "en",
           toastTimer,
           modalTrigger;
         const strings = {
@@ -4953,8 +4953,8 @@ THE SOFTWARE.
             configValues.length === 0;
         }
         function render() {
-          document.documentElement.lang = language;
-          document.documentElement.dir = language === "fa" ? "rtl" : "ltr";
+         document.documentElement.lang = "en";
+document.documentElement.dir = "ltr";
           document.querySelectorAll("[data-i18n]").forEach((node) => {
             node.textContent = t(node.dataset.i18n);
           });
