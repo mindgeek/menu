@@ -534,7 +534,6 @@
         grid-template-columns: 1.18fr 1fr;
         gap: 20px;
       }
-
       .glass {
         position: relative;
         background: var(--glass);
@@ -545,13 +544,7 @@
           inset 0 1px 0 #ffffff1a;
         backdrop-filter: blur(28px) saturate(135%);
         -webkit-backdrop-filter: blur(28px) saturate(135%);
-
-        /* FIX: Forces hardware acceleration to prevent the white box glitch */
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        transform: translate3d(0, 0, 0);
       }
-
       .card {
         padding: 28px;
         min-width: 0;
@@ -1200,11 +1193,11 @@
         @keyframes enter {
           from {
             opacity: 0;
-            transform: translateY(8px) translate3d(0, 0, 0);
+            transform: translateY(8px);
           }
           to {
             opacity: 1;
-            transform: translateY(0) translate3d(0, 0, 0);
+            transform: translateY(0);
           }
         }
       }
@@ -5238,6 +5231,7 @@ THE SOFTWARE.
             modalTrigger?.focus({ preventScroll: true });
           });
         });
+        render();
         setInterval(renderDates, 60000);
       })();
     </script>
